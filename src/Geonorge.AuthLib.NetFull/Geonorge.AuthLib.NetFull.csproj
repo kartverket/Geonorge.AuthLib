@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <PackageId>Geonorge.AuthLib.NetFull</PackageId>
+        <Version>1.0.0</Version>
+        <Authors>Arkitektum</Authors>
+        <Company>Kartverket</Company>
+    </PropertyGroup>
+
+</Project>
