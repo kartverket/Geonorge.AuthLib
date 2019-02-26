@@ -10,6 +10,7 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="4.9.1" />
+      <PackageReference Include="Autofac.Owin" Version="4.2.0" />
       <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
       <PackageReference Include="Microsoft.Owin.Security" Version="4.0.1" />
       <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.1" />
@@ -19,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Geonorge.AuthLib.Common\Geonorge.AuthLib.Common.csproj"/>
+      <ProjectReference Include="..\Geonorge.AuthLib.Common\Geonorge.AuthLib.Common.csproj" />
     </ItemGroup>
 
 </Project>
