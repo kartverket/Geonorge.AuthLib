@@ -29,7 +29,7 @@ namespace Geonorge.AuthLib.Common
         
         private readonly string _apiUrl;
         private readonly string _apiCredentials;
-        
+        /*
         /// <summary>
         /// 
         /// </summary>
@@ -42,7 +42,7 @@ namespace Geonorge.AuthLib.Common
             _apiCredentials = apiCredentials;
             _httpClientFactory = httpClientFactory;
         }
-        
+      */  
         /// <summary>
         /// Initialize the BaatAuthzApi. Will use static HttpClient for api communications.
         /// </summary>
