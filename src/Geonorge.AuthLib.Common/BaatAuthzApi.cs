@@ -21,11 +21,14 @@ namespace Geonorge.AuthLib.Common
     /// </summary>
     public class BaatAuthzApi : IBaatAuthzApi
     {
-        private static readonly ILog Log = LogProvider.For<BaatAuthzApi>(); 
+        private static readonly ILog Log = LogProvider.For<BaatAuthzApi>();
 
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        private static HttpClient _httpClient;
+        
         private readonly string _apiUrl;
         private readonly string _apiCredentials;
-        private readonly IHttpClientFactory _httpClientFactory;
         
         /// <summary>
         /// 
@@ -38,6 +41,17 @@ namespace Geonorge.AuthLib.Common
             _apiUrl = apiUrl;
             _apiCredentials = apiCredentials;
             _httpClientFactory = httpClientFactory;
+        }
+        
+        /// <summary>
+        /// Initialize the BaatAuthzApi. Will use static HttpClient for api communications.
+        /// </summary>
+        /// <param name="apiUrl">the full url to the BAAT api endpoint</param>
+        /// <param name="apiCredentials">Http basic authentication params e.g. username:password </param>
+        public BaatAuthzApi(string apiUrl, string apiCredentials)
+        {
+            _apiUrl = apiUrl;
+            _apiCredentials = apiCredentials;
         }
         
         /// <summary>
@@ -67,7 +81,15 @@ namespace Geonorge.AuthLib.Common
 
         private HttpClient GetClient()
         {
-            var client = _httpClientFactory.CreateClient();
+            HttpClient client = null;
+            if (_httpClientFactory != null)
+            {
+                client = _httpClientFactory.CreateClient();
+            } else {
+                if (_httpClient == null)
+                    _httpClient = new HttpClient();
+                client = _httpClient;
+            }
             
             Log.Debug("Connecting to BaatAuthzApi with credentials: {credentials}", _apiCredentials);
             
