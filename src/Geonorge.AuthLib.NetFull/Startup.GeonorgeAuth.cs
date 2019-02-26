@@ -2,11 +2,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Kartverket.MetadataEditor.Util;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Owin;
 
+[assembly: OwinStartup(typeof(Geonorge.AuthLib.NetFull.Startup))]
 namespace Geonorge.AuthLib.NetFull
 {
     public partial class Startup
