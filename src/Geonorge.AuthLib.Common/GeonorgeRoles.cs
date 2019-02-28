@@ -1,6 +1,9 @@
 namespace Geonorge.AuthLib.Common
 {
-    public class GeonorgeRoles
+    /// <summary>
+    /// All user roles in Geonorge should be defined here. Use these constants instead of magic strings through out the application. 
+    /// </summary>
+    public static class GeonorgeRoles
     {
         public const string MetadataAdmin = "nd.metadata_admin";
         public const string MetadataEditor = "nd.metadata_editor";
