@@ -36,6 +36,8 @@ namespace Geonorge.AuthLib.Common
             if (response == BaatAuthzUserInfoResponse.Empty)
                 Log.Warn("Empty response from BaatAuthzApi - no claims appended to user");
             else
+            {
+                
                 claims.AddRange(new List<Claim>
                 {
                     new Claim("Name", string.IsNullOrEmpty(response?.Name) ? "" : response.Name),
@@ -49,7 +51,19 @@ namespace Geonorge.AuthLib.Common
                     new Claim("OrganizationContactPhone", response.Organization?.ContactPhone)
                 });
 
+                AppendFakeRolesForDemoUser(usernameClaim.Value, claims); // TODO: Remove when BaatAuthz can supply proper role list
+            }
+
             return claims;
+        }
+
+        private void AppendFakeRolesForDemoUser(string username, List<Claim> claims)
+        {
+            if (username == "esk_jenhen")
+            {
+                claims.Add(new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", GeonorgeRoles.MetadataAdmin));
+                claims.Add(new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", GeonorgeRoles.MetadataEditor));
+            }
         }
     }
 }
