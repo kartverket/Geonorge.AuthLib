@@ -17,22 +17,22 @@ namespace Geonorge.AuthLib.Common
         
         public static string GetUserFullName(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue("Name");
+            return principal.FindFirstValue(GeonorgeClaims.Name);
         }
         
         public static string GetUserEmail(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue("Email");
+            return principal.FindFirstValue(GeonorgeClaims.Email);
         }
         
         public static string GetOrganizationName(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue("OrganizationName");
+            return principal.FindFirstValue(GeonorgeClaims.OrganizationName);
         }
         
         public static string GetOrganizationOrgnr(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue("OrganizationName");
+            return principal.FindFirstValue(GeonorgeClaims.OrganizationOrgnr);
         }
 
         public static bool IsAuthenticated(this ClaimsPrincipal principal)
