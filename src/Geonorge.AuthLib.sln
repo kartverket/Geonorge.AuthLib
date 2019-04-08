@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geonorge.AuthLib.NetCore", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geonorge.AuthLib.NetFull", "Geonorge.AuthLib.NetFull\Geonorge.AuthLib.NetFull.csproj", "{78BB3426-BD01-47CF-8734-1B1BEAEBEC07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geonorge.AuthLib.Tests", "Geonorge.AuthLib.Tests\Geonorge.AuthLib.Tests.csproj", "{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{78BB3426-BD01-47CF-8734-1B1BEAEBEC07}.Release|x64.Build.0 = Release|Any CPU
 		{78BB3426-BD01-47CF-8734-1B1BEAEBEC07}.Release|x86.ActiveCfg = Release|Any CPU
 		{78BB3426-BD01-47CF-8734-1B1BEAEBEC07}.Release|x86.Build.0 = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|x64.Build.0 = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Debug|x86.Build.0 = Debug|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|x64.ActiveCfg = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|x64.Build.0 = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|x86.ActiveCfg = Release|Any CPU
+		{2B3C6715-0131-4BCF-83E9-92D7E5EB62C2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
