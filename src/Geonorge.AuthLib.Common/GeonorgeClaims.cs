@@ -11,5 +11,7 @@
         public const string OrganizationContactName = "OrganizationContactName";
         public const string OrganizationContactEmail = "OrganizationContactEmail";
         public const string OrganizationContactPhone = "OrganizationContactPhone";
+        public const string IdToken = "id_token";
+        public const string AccessToken = "access_token";
     }
 }

@@ -32,8 +32,9 @@ namespace Geonorge.AuthLib.NetFull
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
             
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseOpenIdConnectAuthentication(
-                new OpenIdConnectAuthenticationOptions
+
+            _ = app.UseOpenIdConnectAuthentication(
+                openIdConnectOptions: new OpenIdConnectAuthenticationOptions
                 {
                     ClientId = GetAppSetting("GeoID:ClientId"),
                     ClientSecret = GetAppSetting("GeoID:ClientSecret"),
@@ -51,8 +52,8 @@ namespace Geonorge.AuthLib.NetFull
                     {
                         SecurityTokenValidated = async (context) =>
                         {
-                            context.AuthenticationTicket.Identity.AddClaim(new Claim("id_token",context.ProtocolMessage.IdToken));
-                            context.AuthenticationTicket.Identity.AddClaim(new Claim("access_token",context.ProtocolMessage.AccessToken));
+                            context.AuthenticationTicket.Identity.AddClaim(new Claim(GeonorgeClaims.IdToken, context.ProtocolMessage.IdToken));
+                            context.AuthenticationTicket.Identity.AddClaim(new Claim(GeonorgeClaims.AccessToken, context.ProtocolMessage.AccessToken));
 
                             var geonorgeAuthorizationService = context.OwinContext.GetAutofacLifetimeScope().Resolve<IGeonorgeAuthorizationService>();
                             context.AuthenticationTicket.Identity.AddClaims(await geonorgeAuthorizationService.GetClaims(context.AuthenticationTicket.Identity));
@@ -63,6 +64,19 @@ namespace Geonorge.AuthLib.NetFull
                             context.Response.Redirect("/?errormessage=" + context.Exception.Message);
                             return Task.FromResult(0);
                         },
+                        RedirectToIdentityProvider = context =>
+                        {
+                            if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.Logout)
+                            {
+                                var idToken = context.OwinContext.Authentication.User.FindFirst(GeonorgeClaims.IdToken);
+                                if (idToken != null)
+                                {
+                                    var idTokenHint = idToken.Value;
+                                    context.ProtocolMessage.IdTokenHint = idTokenHint;
+                                }
+                            }
+                            return Task.CompletedTask;
+                        }
                     }
                 }
             );
