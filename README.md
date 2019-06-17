@@ -60,7 +60,7 @@ Det er viktig at Autofac settes opp som [Owin Middleware](https://github.com/asp
 
 ### Tilrettelegge for bruk av netstandard2.0
 
-Hvis du får feilmelding om at *System.Object is not found* må du legge til følgende i web.config:
+Ordinære .net framework applikasjoner kan få en feilmelding om at *System.Object is not found*. Da må du tilretteleggg for at appen kan benytte netstandard2.0. Dette gjøres ved å legge til følgende i web.config:
 
 ```
   <system.web>
@@ -83,15 +83,16 @@ Følgende konfigurasjonsvariabler må være definert i appsettings.config i appl
   <add key="GeoID:ClientSecret" value="" />
   <add key="GeoID:Authority" value="" />
   <add key="GeoID:Issuer" value="" />
-  <add key="GeoID:RedirectUri" value="" />
+  <add key="GeoID:RedirectUri" value="https://xxxx/signin-oidc" />
+  <add key="GeoID:PostLogoutRedirectUri" value="https://xxxx/signout-callback-oidc" />
   <add key="GeoID:MetadataAddress" value="" />
   <add key="GeoID:BaatAuthzApiUrl" value=""/>
-  <add key="GeoID:BaatAuthzApiCredentials" value=""/>
+  <add key="GeoID:BaatAuthzApiCredentials" value=""/> <!-- brukernavn og passord separert med kolon -->
 ```
 
 ### Oppsett av innlogging og utlogging
 
-Vi må deretter sette opp Controller-metoder for innlogging og utlogging. 
+Vi må deretter sette opp Controller-metoder for innlogging, utlogging og en callback for når logout-operasjonen har blitt gjennomført. 
 
 ```
     public void SignIn()
@@ -103,10 +104,32 @@ Vi må deretter sette opp Controller-metoder for innlogging og utlogging.
 
     public void SignOut()
     {
-        HttpContext.GetOwinContext().Authentication.SignOut(
-            OpenIdConnectAuthenticationDefaults.AuthenticationType,
-            CookieAuthenticationDefaults.AuthenticationType);
+      var redirectUri = WebConfigurationManager.AppSettings["GeoID:PostLogoutRedirectUri"];
+      HttpContext.GetOwinContext().Authentication.SignOut(
+          new AuthenticationProperties {RedirectUri = redirectUri},
+          OpenIdConnectAuthenticationDefaults.AuthenticationType,
+          CookieAuthenticationDefaults.AuthenticationType);
     }
+
+    /// <summary>
+    /// This is the action responding to /signout-callback-oidc route after logout at the identity provider
+    /// </summary>
+    /// <returns></returns>
+    public ActionResult SignOutCallback()
+    {
+        return RedirectToAction(nameof(RegistersController.Index), "Registers");
+    }
+
+```
+
+For å få utlogging til å fungere må det konfigureres en signout-callback og dette har vi standardisert til å være ruten /signout-callback-oidc på samme måte som for innlogging (/signin-callback-oidc). Denne ruten for innlogging blir levert av Openid Connect biblioteket til Microsoft.
+
+Eksempel på konfigurert callback rute i Registeret:
+
+RouteConfig.cs
+```
+  routes.MapRoute("OIDC-callback-signout", "signout-callback-oidc", new { controller = "Home", action = "SignOutCallback"});
+
 ```
 
 ## Hjelpeklasser
@@ -122,8 +145,10 @@ string username = ClaimsPrincipal.Current.GetUsername();
 string organization = ClaimsPrincipal.Current.GetOrganizationName();
 ```
 
-Se eksempel på bruk av ClaimsPrincipal og ClaimsPrincipalUtility i MetadataEditoren. 
+Se eksempel på bruk av ClaimsPrincipal og ClaimsPrincipalUtility i MetadataEditoren. BaseController-klassen benytter flere av disse for å gi gode metoder som kan benyttes av de ordinære Controller-klassene. 
 
 ### GeonorgeRoles
 
 **Geonorge.AuthLib.Common.GenorgeRoles** inneholder konstanter med rollenavn vi mottar fra **Baat**. Disse skal benyttes istedenfor "magiske strenger" rundt om i de ulike applikasjonene.
+
+**Geonorge.AuthLib.Common.GeonorgeClaims** inneholder konstanter med navn på claims som ligger på brukeren. Benytt disse dersom du må hente ut claims - men vurder om ikke det er en hjelpemetode som kan benyttes isteden, evt implementer en ny hjelpemetode.
