@@ -58,6 +58,16 @@ namespace Kartverket.MetadataEditor
 
 Det er viktig at Autofac settes opp som [Owin Middleware](https://github.com/aspnet/AspNetKatana/wiki). Dette gjør vi for å kunne få tak i tjenesteklasser i løpet av autentiseringen av brukeren. 
 
+### Konfigurasjon av Autofac
+
+Autofac må ha beskjed om hvordan klassene til dette biblioteket skal instansieres. Dette gjøres ved å registrere en egen Autofac-modul i oppstarten. 
+
+```
+  builder.RegisterModule<GeonorgeAuthenticationModule>();
+```
+
+```builder``` er et objekt av typen Autofac.ContainerBuilder. I veldig mange av Geonorge-prosjektene har vi en egen DependencyConfig-klasse. Linjen over vil vi ofte plassere i denne klassen.
+
 ### Tilrettelegge for bruk av netstandard2.0
 
 Ordinære .net framework applikasjoner kan få en feilmelding om at *System.Object is not found*. Da må du tilretteleggg for at appen kan benytte netstandard2.0. Dette gjøres ved å legge til følgende i web.config:
