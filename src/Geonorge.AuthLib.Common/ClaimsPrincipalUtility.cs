@@ -36,5 +36,14 @@ namespace Geonorge.AuthLib.Common
             }
             return false;
         }
+
+        public static bool UserHasMetadataEditorRole(IPrincipal user)
+        {
+            if (user is ClaimsPrincipal principal)
+            {
+                return principal.IsInRole(GeonorgeRoles.MetadataEditor);
+            }
+            return false;
+        }
     }
 }
