@@ -9,14 +9,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Autofac" Version="4.9.4" />
+      <PackageReference Include="Autofac" Version="4.9.1" />
       <PackageReference Include="Autofac.Owin" Version="4.2.0" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.5.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
       <PackageReference Include="Microsoft.Owin.Security" Version="4.0.1" />
       <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.0.1" />
       <PackageReference Include="Microsoft.Owin.Security.OpenIdConnect" Version="4.0.1" />
       <PackageReference Include="Owin" Version="1.0.0" />
-      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
+      <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
     </ItemGroup>
 
     <ItemGroup>
