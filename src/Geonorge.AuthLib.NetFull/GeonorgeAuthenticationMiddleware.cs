@@ -60,8 +60,17 @@ namespace Geonorge.AuthLib.NetFull
                         },
                         AuthenticationFailed = (context) =>
                         {
-                            context.HandleResponse();
-                            context.Response.Redirect("/?errormessage=" + context.Exception.Message);
+                            if (context.Exception.Message.Contains("IDX21323"))
+                            {
+                                //https://stackoverflow.com/questions/49944071/idx21323-openidconnectprotocolvalidationcontext-nonce-was-null-openidconnectpro
+                                context.HandleResponse();
+                                context.OwinContext.Authentication.Challenge();
+                            }
+                            else 
+                            { 
+                                context.HandleResponse();
+                                context.Response.Redirect("/?errormessage=" + context.Exception.Message);
+                            }
                             return Task.FromResult(0);
                         },
                         RedirectToIdentityProvider = context =>
