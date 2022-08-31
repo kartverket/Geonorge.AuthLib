@@ -5,6 +5,7 @@ using Autofac.Integration.Owin;
 using Geonorge.AuthLib.Common;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Host.SystemWeb;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
@@ -44,6 +45,7 @@ namespace Geonorge.AuthLib.NetFull
                     PostLogoutRedirectUri = GetAppSetting("GeoID:RedirectUri"),
                     Scope = OpenIdConnectScope.OpenId,
                     ResponseType = OpenIdConnectResponseType.CodeIdTokenToken,
+                    CookieManager = new SystemWebCookieManager(),
                     TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = GetAppSetting("GeoID:Issuer")
