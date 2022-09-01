@@ -62,10 +62,12 @@ namespace Geonorge.AuthLib.NetFull
                         },
                         AuthenticationFailed = (context) =>
                         {
-                            // skip IDX21323 exception
+                            // handle IDX21323 exception
                             if (context.Exception.Message.Contains("IDX21323"))
                             {
-                                context.SkipToNextMiddleware();
+                                context.HandleResponse();
+                                var url = context.Request.Uri.ToString(); 
+                                context.OwinContext.Response.Redirect(url);
                             }
                             else
                             {
