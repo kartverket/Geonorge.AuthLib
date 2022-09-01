@@ -45,7 +45,6 @@ namespace Geonorge.AuthLib.NetFull
                     PostLogoutRedirectUri = GetAppSetting("GeoID:RedirectUri"),
                     Scope = OpenIdConnectScope.OpenId,
                     ResponseType = OpenIdConnectResponseType.CodeIdTokenToken,
-                    CookieManager = new SystemWebCookieManager(),
                     TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = GetAppSetting("GeoID:Issuer")
@@ -62,16 +61,8 @@ namespace Geonorge.AuthLib.NetFull
                         },
                         AuthenticationFailed = (context) =>
                         {
-                            if (context.Exception.Message.Contains("IDX21323"))
-                            {
-                                context.HandleResponse();
-                                context.OwinContext.Authentication.Challenge();
-                            }
-                            else
-                            {
-                                context.HandleResponse();
-                                context.Response.Redirect("/?errormessage=" + context.Exception.Message);
-                            }
+                            context.HandleResponse();
+                            context.Response.Redirect("/?errormessage=" + context.Exception.Message);
                             return Task.FromResult(0);
                         },
                         RedirectToIdentityProvider = context =>
