@@ -62,8 +62,16 @@ namespace Geonorge.AuthLib.NetFull
                         },
                         AuthenticationFailed = (context) =>
                         {
-                            context.HandleResponse();
-                            context.Response.Redirect("/?errormessage=" + context.Exception.Message);
+                            // skip IDX21323 exception
+                            if (context.Exception.Message.Contains("IDX21323"))
+                            {
+                                context.SkipToNextMiddleware();
+                            }
+                            else
+                            {
+                                context.HandleResponse();
+                                context.Response.Redirect("/?errormessage=" + context.Exception.Message);
+                            }
                             return Task.FromResult(0);
                         },
                         RedirectToIdentityProvider = context =>
