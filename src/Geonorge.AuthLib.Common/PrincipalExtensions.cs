@@ -12,7 +12,7 @@ namespace Geonorge.AuthLib.Common
     {
         public static string GetUsername(this ClaimsPrincipal principal)
         {
-            return principal.FindFirstValue("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
+            return principal.FindFirstValue("preferred_username");
         }
         
         public static string GetUserFullName(this ClaimsPrincipal principal)
