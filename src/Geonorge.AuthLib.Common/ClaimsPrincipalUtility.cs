@@ -54,5 +54,14 @@ namespace Geonorge.AuthLib.Common
             }
             return false;
         }
+
+        public static bool UserHasRegisterManagerRole(IPrincipal user)
+        {
+            if (user is ClaimsPrincipal principal)
+            {
+                return principal.IsInRole(GeonorgeRoles.RegisterManager);
+            }
+            return false;
+        }
     }
 }

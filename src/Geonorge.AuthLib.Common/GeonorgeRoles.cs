@@ -10,5 +10,6 @@ namespace Geonorge.AuthLib.Common
         public const string DokAdmin = "nd.dok_admin";
         public const string DokEditor = "nd.dok_editor";
         public const string MetadataManager = "nd.metadata_forvalter";
+        public const string RegisterManager = "nd.register_forvalter";
     }
 }
