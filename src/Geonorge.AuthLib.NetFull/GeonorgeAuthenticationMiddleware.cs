@@ -1,5 +1,7 @@
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 using Autofac;
 using Autofac.Integration.Owin;
 using Geonorge.AuthLib.Common;
@@ -53,6 +55,10 @@ namespace Geonorge.AuthLib.NetFull
                     {
                         SecurityTokenValidated = async (context) =>
                         {
+                            var sessionSection = (SessionStateSection)WebConfigurationManager.GetSection("system.web/sessionState");
+                            context.AuthenticationTicket.Properties.ExpiresUtc = DateTimeOffset.UtcNow + sessionSection.Timeout;
+                            context.AuthenticationTicket.Properties.AllowRefresh = true;
+
                             context.AuthenticationTicket.Identity.AddClaim(new Claim(GeonorgeClaims.IdToken, context.ProtocolMessage.IdToken));
                             context.AuthenticationTicket.Identity.AddClaim(new Claim(GeonorgeClaims.AccessToken, context.ProtocolMessage.AccessToken));
 
