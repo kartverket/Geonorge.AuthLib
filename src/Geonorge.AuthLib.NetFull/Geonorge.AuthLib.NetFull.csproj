@@ -11,7 +11,7 @@
     <ItemGroup>
       <PackageReference Include="Autofac" Version="4.9.1" />
       <PackageReference Include="Autofac.Owin" Version="4.2.0" />
-      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="5.4.0" />
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.1" />
       <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.2.2" />
       <PackageReference Include="Microsoft.Owin.Security" Version="4.2.2" />
       <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.2.2" />
