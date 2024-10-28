@@ -10,29 +10,3 @@ spec:
   lifecycle: "production"
   owner: "datadeling_og_distribusjon"
   system: "geonorge"
----
-apiVersion: "backstage.io/v1alpha1"
-kind: "Group"
-metadata:
-  name: "security_champion_Geonorge.AuthLib"
-  title: "Security Champion Geonorge.AuthLib"
-spec:
-  type: "security_champion"
-  parent: "land_security_champions"
-  members:
-  - "dagolav"
-  children:
-  - "resource:Geonorge.AuthLib"
----
-apiVersion: "backstage.io/v1alpha1"
-kind: "Resource"
-metadata:
-  name: "Geonorge.AuthLib"
-  links:
-  - url: "https://github.com/kartverket/Geonorge.AuthLib"
-    title: "Geonorge.AuthLib på GitHub"
-spec:
-  type: "repo"
-  owner: "security_champion_Geonorge.AuthLib"
-  dependencyOf:
-  - "component:Geonorge.AuthLib"
