@@ -12,5 +12,6 @@ namespace Geonorge.AuthLib.Common
         /// <param name="identity"></param>
         /// <returns></returns>
         Task<List<Claim>> GetClaims(ClaimsIdentity identity);
+        Task<string> GetUserNameFromIntrospection(string token);
     }
 }

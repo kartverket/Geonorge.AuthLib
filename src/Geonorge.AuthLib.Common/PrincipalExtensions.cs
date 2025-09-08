@@ -5,31 +5,28 @@ using System.Security.Principal;
 
 namespace Geonorge.AuthLib.Common
 {
-    /// <summary>
-    /// This class provides convenience methods for accessing Geonorge related claims. 
-    /// </summary>
     public static class PrincipalExtensions
     {
         public static string GetUsername(this ClaimsPrincipal principal)
         {
             return principal.FindFirstValue("preferred_username");
         }
-        
+
         public static string GetUserFullName(this ClaimsPrincipal principal)
         {
             return principal.FindFirstValue(GeonorgeClaims.Name);
         }
-        
+
         public static string GetUserEmail(this ClaimsPrincipal principal)
         {
             return principal.FindFirstValue(GeonorgeClaims.Email);
         }
-        
+
         public static string GetOrganizationName(this ClaimsPrincipal principal)
         {
             return principal.FindFirstValue(GeonorgeClaims.OrganizationName);
         }
-        
+
         public static string GetOrganizationOrgnr(this ClaimsPrincipal principal)
         {
             return principal.FindFirstValue(GeonorgeClaims.OrganizationOrgnr);
@@ -43,7 +40,7 @@ namespace Geonorge.AuthLib.Common
             }
             return principal?.Identities != null && principal.Identities.Any(i => i.IsAuthenticated);
         }
-        
+
         /// https://github.com/aspnet/Identity/blob/ab43154577fe126ef531bb7a11b5eaa03add7bbf/src/Microsoft.AspNet.Identity/PrincipalExtensions.cs#L65
         /// <summary>
         /// Returns the value for the first claim of the specified type otherwise null the claim is not present.

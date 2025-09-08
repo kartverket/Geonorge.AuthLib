@@ -1,10 +1,9 @@
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Geonorge.AuthLib.Common;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
-namespace Geonorge.AuthLib.NetCore
+namespace Geonorge.AuthLib.Common
 {
     /// <summary>
     /// Custom event handler for authorization in Geonorge

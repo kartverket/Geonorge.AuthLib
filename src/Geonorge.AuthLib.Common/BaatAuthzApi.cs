@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Geonorge.AuthLib.Common.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Geonorge.AuthLib.Common
 {
@@ -25,6 +27,7 @@ namespace Geonorge.AuthLib.Common
     public class BaatAuthzApi : IBaatAuthzApi
     {
         private static readonly ILog Log = LogProvider.For<BaatAuthzApi>();
+        private readonly ILogger<BaatAuthzApi> _logger;
 
         private readonly IHttpClientFactory _httpClientFactory;
 
@@ -32,20 +35,25 @@ namespace Geonorge.AuthLib.Common
         
         private readonly string _apiUrl;
         private readonly string _apiCredentials;
-        /*
+
         /// <summary>
-        /// 
+        /// Initialize the BaatAuthzApi. Will use HttpClientFactory for api communications.
         /// </summary>
-        /// <param name="apiUrl">the full url to the BAAT api endpoint</param>
-        /// <param name="apiCredentials">Http basic authentication params e.g. username:password </param>
+        /// <param name="logger">logger instance for logging</param>
+        /// <param name="config">
+        /// Required config: API URL as well as basic auth (username:password)
+        /// <br/>Requires API URL in appsettings.json: Urls:BaatAuthzApi
+        /// <br/>Requires basic auth credentials in appsettings.json: BaatAuthzApiCredentials
+        /// </param>
         /// <param name="httpClientFactory">provider of http clients used for communicating with BAAT</param>
-        public BaatAuthzApi(string apiUrl, string apiCredentials, IHttpClientFactory httpClientFactory)
+        public BaatAuthzApi(ILogger<BaatAuthzApi> logger, IConfiguration config, IHttpClientFactory httpClientFactory)
         {
-            _apiUrl = apiUrl;
-            _apiCredentials = apiCredentials;
+            _logger = logger;
+            _apiUrl = config["auth:baat:BaatAuthzApiUrl"];
+            _apiCredentials = config["auth:baat:BaatAuthzApiCredentials"];
             _httpClientFactory = httpClientFactory;
         }
-      */  
+
         /// <summary>
         /// Initialize the BaatAuthzApi. Will use static HttpClient for api communications.
         /// </summary>
@@ -64,19 +72,28 @@ namespace Geonorge.AuthLib.Common
         public async Task<BaatAuthzUserInfoResponse> Info(string username)
         {
             var url = $"{_apiUrl}authzinfo/{username}";
-            Log.Debug("Fetching data from {url}", url);
+            if (_logger != null)
+                _logger.LogDebug("Fetching data from {url}", url);
+            else
+                Log.Debug("Fetching data from {url}", url);
             
             var res = await GetClient().GetAsync(url);
 
             if (!res.IsSuccessStatusCode)
             {
-                Log.Error("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
+                if (_logger != null)
+                    _logger.LogError("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
+                else
+                    Log.Error("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
                 return BaatAuthzUserInfoResponse.Empty;
             }
             
             var json = await res.Content.ReadAsStringAsync();
             
-            Log.Debug("Response from BaatAuthzApi: {json}", json);
+            if (_logger != null)
+                _logger.LogDebug("Response from BaatAuthzApi: {json}", json);
+            else
+                Log.Debug("Response from BaatAuthzApi: {json}", json);
             
             return JsonConvert.DeserializeObject<BaatAuthzUserInfoResponse>(json);
         
@@ -85,24 +102,36 @@ namespace Geonorge.AuthLib.Common
         public async Task<BaatAuthzUserRolesResponse> GetRoles(string username)
         {
             var url = $"{_apiUrl}authzlist/{username}";
-            Log.Debug("Fetching data from {url}", url);
+            if (_logger != null)
+                _logger.LogDebug("Fetching data from {url}", url);
+            else
+                Log.Debug("Fetching data from {url}", url);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var res = await GetClient().GetAsync(url);
             stopwatch.Stop();
             
-            Log.Info("Http call to {url} with response code {statuscode} executed in {millis}", url, res.StatusCode, stopwatch.ElapsedMilliseconds);
+            if (_logger != null)
+                _logger.LogInformation("Http call to {url} with response code {statuscode} executed in {millis}", url, res.StatusCode, stopwatch.ElapsedMilliseconds);
+            else
+                Log.Info("Http call to {url} with response code {statuscode} executed in {millis}", url, res.StatusCode, stopwatch.ElapsedMilliseconds);
             
             if (!res.IsSuccessStatusCode)
             {
-                Log.Error("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
+                if (_logger != null)
+                    _logger.LogError("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
+                else
+                    Log.Error("Looking up {user} from BaatAuthzApi failed with status code: {code}", username, res.StatusCode);
                 return BaatAuthzUserRolesResponse.Empty;
             }
             
             var json = await res.Content.ReadAsStringAsync();
-            
-            Log.Debug("Response from BaatAuthzApi: {json}", json);
+
+            if (_logger != null)
+                _logger.LogDebug("Response from BaatAuthzApi: {json}", json);
+            else
+                Log.Debug("Response from BaatAuthzApi: {json}", json);
             
             return JsonConvert.DeserializeObject<BaatAuthzUserRolesResponse>(json);
 
@@ -120,7 +149,10 @@ namespace Geonorge.AuthLib.Common
                 client = _httpClient;
             }
             
-            Log.Debug("Connecting to BaatAuthzApi with credentials: {credentials}", _apiCredentials);
+            if (_logger != null)
+                _logger.LogDebug("Connecting to BaatAuthzApi with credentials: {credentials}", _apiCredentials);
+            else
+                Log.Debug("Connecting to BaatAuthzApi with credentials: {credentials}", _apiCredentials);
             
             var byteArray = Encoding.ASCII.GetBytes(_apiCredentials);
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));

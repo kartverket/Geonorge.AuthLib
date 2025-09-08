@@ -1,6 +1,6 @@
 ﻿namespace Geonorge.AuthLib.Common
 {
-    public static class GeonorgeClaims
+    public class GeonorgeClaims
     {
         public const string Name = "Name";
         public const string Email = "Email";

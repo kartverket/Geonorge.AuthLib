@@ -3,9 +3,6 @@ using System.Security.Principal;
 
 namespace Geonorge.AuthLib.Common
 {
-    /// <summary>
-    /// Utility class for quickly accessing user claims. See examples of use in ControllerBase class in MetadataEditor.
-    /// </summary>
     public static class ClaimsPrincipalUtility
     {
         public static string GetCurrentUserOrganizationName(IPrincipal user)

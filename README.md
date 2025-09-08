@@ -1,12 +1,10 @@
 # Geonorge.AuthLib
 Autentisering og autoriseringsbibliotek for applikasjoner i Geonorge
 
-Biblioteket har tre deler:
+Biblioteket har to deler:
 
 * Geonorge.AuthLib.Common
   * Felles logikk og hjelpeklasser for uthenting av brukerinformasjon fra BaatAuthz-apiet.
-* Geonorge.AuthLib.NetCore
-  * Gjenbrukbar konfigurasjon for .net core applikasjoner
 * Geonorge.AuthLib.NetFull
   * Gjenbrukbar konfigurasjon for .net framework applikasjoner
 
@@ -70,7 +68,7 @@ Autofac må ha beskjed om hvordan klassene til dette biblioteket skal instansier
 
 ### Tilrettelegge for bruk av netstandard2.0
 
-Ordinære .net framework applikasjoner kan få en feilmelding om at *System.Object is not found*. Da må du tilretteleggg for at appen kan benytte netstandard2.0. Dette gjøres ved å legge til følgende i web.config:
+Ordinære .net framework applikasjoner kan få en feilmelding om at *System.Object is not found*. Da må du tilrettelegge for at appen kan benytte netstandard2.0. Dette gjøres ved å legge til følgende i web.config:
 
 ```
   <system.web>
@@ -86,18 +84,19 @@ Ordinære .net framework applikasjoner kan få en feilmelding om at *System.Obje
 
 ### Konfigurasjonsvariabler
 
-Følgende konfigurasjonsvariabler må være definert i appsettings.config i applikasjonen: 
+Følgende konfigurasjonsvariabler må være definert i appsettings.config (evt. appsettings.json for .NET 8+) i applikasjonen: 
 
 ```
-  <add key="GeoID:ClientId" value="" />
-  <add key="GeoID:ClientSecret" value="" />
-  <add key="GeoID:Authority" value="" />
-  <add key="GeoID:Issuer" value="" />
-  <add key="GeoID:RedirectUri" value="https://xxxx/signin-oidc" />
-  <add key="GeoID:PostLogoutRedirectUri" value="https://xxxx/signout-callback-oidc" />
-  <add key="GeoID:MetadataAddress" value="" />
-  <add key="GeoID:BaatAuthzApiUrl" value=""/>
-  <add key="GeoID:BaatAuthzApiCredentials" value=""/> <!-- brukernavn og passord separert med kolon -->
+  <add key="auth:oidc:ClientId" value="" />
+  <add key="auth:oidc:ClientSecret" value="" />
+  <add key="auth:oidc:Authority" value="" />
+  <add key="auth:oidc:Issuer" value="" />
+  <add key="auth:oidc:IntrospectionUrl" value="" />
+  <add key="auth:oidc:RedirectUri" value="https://xxxx/signin-oidc" />
+  <add key="auth:oidc:PostLogoutRedirectUri" value="https://xxxx/signout-callback-oidc" />
+  <add key="auth:oidc:MetadataAddress" value="" />
+  <add key="auth:oidc:BaatAuthzApiUrl" value=""/>
+  <add key="auth:oidc:BaatAuthzApiCredentials" value=""/> <!-- brukernavn og passord separert med kolon -->
 ```
 
 ### Oppsett av innlogging og utlogging
