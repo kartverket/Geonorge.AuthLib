@@ -2,8 +2,8 @@ using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Geonorge.AuthLib.Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -94,9 +94,9 @@ namespace Geonorge.AuthLib.Common
                 _logger.LogDebug("Response from BaatAuthzApi: {json}", json);
             else
                 Log.Debug("Response from BaatAuthzApi: {json}", json);
-            
-            return JsonConvert.DeserializeObject<BaatAuthzUserInfoResponse>(json);
-        
+
+            return JsonSerializer.Deserialize<BaatAuthzUserInfoResponse>(json);
+
         }
 
         public async Task<BaatAuthzUserRolesResponse> GetRoles(string username)
@@ -132,8 +132,8 @@ namespace Geonorge.AuthLib.Common
                 _logger.LogDebug("Response from BaatAuthzApi: {json}", json);
             else
                 Log.Debug("Response from BaatAuthzApi: {json}", json);
-            
-            return JsonConvert.DeserializeObject<BaatAuthzUserRolesResponse>(json);
+
+            return JsonSerializer.Deserialize<BaatAuthzUserRolesResponse>(json);
 
         }
 

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Geonorge.AuthLib.Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 
 namespace Geonorge.AuthLib.Common
 {
@@ -118,13 +118,20 @@ namespace Geonorge.AuthLib.Common
                 var response = await client.SendAsync(request);
                 var result = await response.Content.ReadAsStringAsync();
 
-                var json = JObject.Parse(result);
-                var isActiveToken = json["active"]?.Value<bool>() ?? false;
-
-                if (isActiveToken)
+                using (JsonDocument doc = JsonDocument.Parse(result))
                 {
-                    username = json["username"]?.Value<string>();
-                    return username;
+                    JsonElement root = doc.RootElement;
+
+                    bool isActiveToken = root.TryGetProperty("active", out JsonElement activeElement)
+                                         && activeElement.GetBoolean();
+
+                    if (isActiveToken)
+                    {
+                        if (root.TryGetProperty("username", out JsonElement usernameElement))
+                        {
+                            return usernameElement.GetString();
+                        }
+                    }
                 }
 
                 if (_logger != null)
