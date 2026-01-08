@@ -22,7 +22,7 @@
 		<Title>Geonorge .NET Framework Auth. Library</Title>
 		<Authors>Arkitektum, Statens Kartverk</Authors>
 		<PackageId>$(AssemblyName)</PackageId>
-		<PackageVersion>2.0.0-alpha2</PackageVersion>
+		<PackageVersion>2.0.0</PackageVersion>
 		<PackageDescription>AuthN/AuthZ library for .NET Framework Geonorge Components.</PackageDescription>
 		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
