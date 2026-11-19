@@ -28,13 +28,25 @@ namespace Geonorge.AuthLib.NetFull
         /// * GeoID:Issuer
         /// * GeoID:BaatAuthzApiUrl
         /// * GeoID:BaatAuthzApiCredentials
+        /// Optional AppSettings:
+        /// * GeoID:CookieName - name of the authentication cookie. Set a unique value for applications
+        ///   that share host name with other applications (e.g. sub applications under /register),
+        ///   otherwise they overwrite each other's authentication cookie.
         /// </summary>
         /// <param name="app"></param>
         public static void UseGeonorgeAuthentication(this IAppBuilder app)
         {
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
             
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            var cookieOptions = new CookieAuthenticationOptions
+            {
+                CookieManager = new SystemWebChunkingCookieManager()
+            };
+            var cookieName = GetAppSetting("GeoID:CookieName");
+            if (!string.IsNullOrWhiteSpace(cookieName))
+                cookieOptions.CookieName = cookieName;
+
+            app.UseCookieAuthentication(cookieOptions);
 
             _ = app.UseOpenIdConnectAuthentication(
                 openIdConnectOptions: new OpenIdConnectAuthenticationOptions
@@ -47,6 +59,7 @@ namespace Geonorge.AuthLib.NetFull
                     PostLogoutRedirectUri = GetAppSetting("GeoID:RedirectUri"),
                     Scope = OpenIdConnectScope.OpenId,
                     ResponseType = OpenIdConnectResponseType.CodeIdTokenToken,
+                    CookieManager = new NonceCleanupCookieManager(),
                     TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidIssuer = GetAppSetting("GeoID:Issuer")
@@ -73,6 +86,15 @@ namespace Geonorge.AuthLib.NetFull
                         },
                         RedirectToIdentityProvider = context =>
                         {
+                            if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.Authentication
+                                && !RequestUtility.IsBrowserNavigation(context.Request))
+                            {
+                                // AJAX/fetch/resource requests cannot complete a login, keep the 401 instead of
+                                // redirecting (no nonce cookie is written for these, see NonceCleanupCookieManager).
+                                context.HandleResponse();
+                                return Task.CompletedTask;
+                            }
+
                             if (context.ProtocolMessage.RequestType == OpenIdConnectRequestType.Logout)
                             {
                                 var idToken = context.OwinContext.Authentication.User.FindFirst(GeonorgeClaims.IdToken);

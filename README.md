@@ -99,6 +99,14 @@ Følgende konfigurasjonsvariabler må være definert i appsettings.config (evt. 
   <add key="auth:oidc:BaatAuthzApiCredentials" value=""/> <!-- brukernavn og passord separert med kolon -->
 ```
 
+#### Valgfritt: eget navn på autentiseringscookie
+
+Applikasjoner som deler vertsnavn med andre applikasjoner (f.eks. underapplikasjoner under registeret) må ha et eget cookienavn. Ellers overskriver de hverandres `.AspNet.Cookies`, noe som gir gjentatte innlogginger og opphopning av `OpenIdConnect.nonce.*`-cookies ("Request cookie too large").
+
+```
+  <add key="GeoID:CookieName" value=".AspNet.Cookies.MinApp" />
+```
+
 ### Oppsett av innlogging og utlogging
 
 Vi må deretter sette opp Controller-metoder for innlogging, utlogging og en callback for når logout-operasjonen har blitt gjennomført. 
