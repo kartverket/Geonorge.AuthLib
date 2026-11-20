@@ -48,10 +48,13 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.3.14" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+		<!-- Pinned to override vulnerable transitive versions (GHSA-6527-9fp8-r4x6, GHSA-5crp-9r3c-p9vr) -->
+		<PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.3.14" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.14.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0">
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.404">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
